@@ -1,0 +1,86 @@
+{
+  "buildFiles": [
+    "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/node_modules/@react-native-google-signin/google-signin/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/node_modules/react-native-image-picker/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/node_modules/react-native-maps/android/src/main/jni/CMakeLists.txt",
+    "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/node_modules/react-native-safe-area-context/android/src/main/jni/CMakeLists.txt",
+    "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/node_modules/react-native-screens/android/src/main/jni/CMakeLists.txt",
+    "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/node_modules/react-native/ReactAndroid/cmake-utils/default-app-setup/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/briannettles/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/android/app/.cxx/Debug/361d6l53/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/briannettles/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/android/app/.cxx/Debug/361d6l53/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "appmodules::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "appmodules",
+      "output": "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/android/app/build/intermediates/cxx/Debug/361d6l53/obj/arm64-v8a/libappmodules.so",
+      "runtimeFiles": [
+        "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/android/app/build/intermediates/cxx/Debug/361d6l53/obj/arm64-v8a/libreact_codegen_safeareacontext.so",
+        "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/android/app/build/intermediates/cxx/Debug/361d6l53/obj/arm64-v8a/libreact_codegen_rnscreens.so",
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/a18451f415b73841e30da63b3d9805af/transformed/fbjni-0.7.0/prefab/modules/fbjni/libs/android.arm64-v8a/libfbjni.so",
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/eb6d09c91acf843499bdca80e0a66fd6/transformed/react-android-0.81.0-debug/prefab/modules/jsi/libs/android.arm64-v8a/libjsi.so",
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/eb6d09c91acf843499bdca80e0a66fd6/transformed/react-android-0.81.0-debug/prefab/modules/reactnative/libs/android.arm64-v8a/libreactnative.so"
+      ]
+    },
+    "react_codegen_RNGoogleSignInCGen::@337b7b353bd94a4215c0": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "react_codegen_RNGoogleSignInCGen"
+    },
+    "react_codegen_RNImagePickerSpec::@f66ee9a2efecfb28bee4": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "react_codegen_RNImagePickerSpec"
+    },
+    "react_codegen_RNMapsSpecs::@5748abef1962d24942ec": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "react_codegen_RNMapsSpecs"
+    },
+    "react_codegen_rnscreens::@25bcbd507e98d3a854ad": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "react_codegen_rnscreens",
+      "output": "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/android/app/build/intermediates/cxx/Debug/361d6l53/obj/arm64-v8a/libreact_codegen_rnscreens.so",
+      "runtimeFiles": [
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/eb6d09c91acf843499bdca80e0a66fd6/transformed/react-android-0.81.0-debug/prefab/modules/reactnative/libs/android.arm64-v8a/libreactnative.so",
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/eb6d09c91acf843499bdca80e0a66fd6/transformed/react-android-0.81.0-debug/prefab/modules/jsi/libs/android.arm64-v8a/libjsi.so",
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/a18451f415b73841e30da63b3d9805af/transformed/fbjni-0.7.0/prefab/modules/fbjni/libs/android.arm64-v8a/libfbjni.so"
+      ]
+    },
+    "react_codegen_safeareacontext::@7984cd80db47aa7b952a": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "react_codegen_safeareacontext",
+      "output": "/Users/briannettles/development/bookofmormonheartland/sacred-apps/sacredplants/sacredplants/android/app/build/intermediates/cxx/Debug/361d6l53/obj/arm64-v8a/libreact_codegen_safeareacontext.so",
+      "runtimeFiles": [
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/a18451f415b73841e30da63b3d9805af/transformed/fbjni-0.7.0/prefab/modules/fbjni/libs/android.arm64-v8a/libfbjni.so",
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/eb6d09c91acf843499bdca80e0a66fd6/transformed/react-android-0.81.0-debug/prefab/modules/jsi/libs/android.arm64-v8a/libjsi.so",
+        "/Users/briannettles/.gradle/caches/8.14.3/transforms/eb6d09c91acf843499bdca80e0a66fd6/transformed/react-android-0.81.0-debug/prefab/modules/reactnative/libs/android.arm64-v8a/libreactnative.so"
+      ]
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/Users/briannettles/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/Users/briannettles/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}
