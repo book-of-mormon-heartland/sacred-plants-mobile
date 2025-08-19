@@ -3,13 +3,14 @@ var Environment = require('.././context/environment.ts');
 import { GoogleAuthContext, GoogleAuthProvider } from '.././context/GoogleAuthContext';
 import LoginScreenComponent from './LoginScreenComponent.jsx';
 import PlantScreenComponent from './PlantScreenComponent.jsx';
+import NoCameraScreenComponent from './NoCameraScreenComponent.jsx';
 
 
 const HomeScreenComponent = ( {navigation} ) => {
 
-  const { message } = useContext(GoogleAuthContext);
+  const { googleMessage } = useContext(GoogleAuthContext);
   
-  if(message=="Logged In") {
+  if(googleMessage=="Logged In") {
     return (
       <PlantScreenComponent />
     );

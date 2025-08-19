@@ -8,7 +8,7 @@ export const GoogleAuthContext = createContext("");
 
 export const GoogleAuthProvider = ({ children }) => {
 
-    const [message, setMessage] = useState("Not Signed In");
+    const [googleMessage, setGoogleMessage] = useState("Not Signed In");
     const [userProfile, setUserProfile] = useState(undefined);
     const [userToken, setUserToken] = useState("");
     const [jwtToken, setJwtToken] = useState("");
@@ -48,7 +48,7 @@ export const GoogleAuthProvider = ({ children }) => {
                     if(obj?.jwtToken) {
                         setJwtToken(obj.jwtToken || "");
                         setRefreshToken(obj.refreshToken || "");
-                        setMessage("Logged In");
+                        setGoogleMessage("Logged In");
                         setUserProfile(user);
                         setUserToken(idToken);
                     } else {
@@ -60,7 +60,7 @@ export const GoogleAuthProvider = ({ children }) => {
 
             } else {
                 console.log("NOT Successful: ", response.data );
-                setMessage( "Not Successful");
+                setGoogleMessage( "Not Successful");
                 setUserProfile(undefined);
                 setUserToken("");
                 setJwtToken("");
@@ -70,26 +70,26 @@ export const GoogleAuthProvider = ({ children }) => {
             console.log("Error: ", error );
 
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                setMessage('User cancelled the login flow');
+                setGoogleMessage('User cancelled the login flow');
                 setUserProfile(undefined);
                 setUserToken("");
                 setJwtToken("");
                 setRefreshToken("");
 
             } else if (error.code === statusCodes.IN_PROGRESS) {
-                setMessage('Sign in is in progress already');
+                setGoogleMessage('Sign in is in progress already');
                 setUserProfile(undefined);
                 setUserToken("");
                 setJwtToken("");
                 setRefreshToken("");
             } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-                setMessage('Play services not available or outdated');
+                setGoogleMessage('Play services not available or outdated');
                 setUserProfile(undefined);
                 setUserToken("");
                 setJwtToken("");
                 setRefreshToken("");
             } else {
-                setMessage(`Some other error happened: ${error.message}`);
+                setGoogleMessage(`Some other error happened: ${error.message}`);
                 setUserProfile(undefined);
                 setUserToken("");
                 setJwtToken("");
@@ -97,7 +97,7 @@ export const GoogleAuthProvider = ({ children }) => {
             }
         }
         if(message=="") {
-            setMessage("Logged In");
+            setGoogleMessage("Logged In");
         }
     };
 
@@ -108,7 +108,7 @@ export const GoogleAuthProvider = ({ children }) => {
         try {
             const signoutResponse = await GoogleSignin.signOut();
             console.log("signoutResponse: " + signoutResponse);
-            setMessage('Not Signed In'); 
+            setGoogleMessage('Not Signed In'); 
             setUserProfile(undefined);
             setUserToken("");
             setJwtToken("");
@@ -121,7 +121,7 @@ export const GoogleAuthProvider = ({ children }) => {
 
 
     return (
-        <GoogleAuthContext.Provider value={{ signIn, signOut, message, setMessage, userToken, userProfile,  jwtToken, refreshToken }}>
+        <GoogleAuthContext.Provider value={{ signIn, signOut, googleMessage, setGoogleMessage, userToken, userProfile, jwtToken, refreshToken }}>
             { children }
         </GoogleAuthContext.Provider>
     );

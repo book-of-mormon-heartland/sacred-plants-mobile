@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, Component } from 'react';
-import { View, Text, StyleSheet, Button, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 var Environment = require('.././context/environment.ts');
 import { ThemeContext } from '.././context/ThemeContext';
 import { GoogleAuthContext } from '.././context/GoogleAuthContext';
@@ -7,19 +7,26 @@ import { Platform } from 'react-native';
 import { useNavigation, navigate } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import CameraScreenComponent from './CameraScreenComponent.jsx';
-import GoogleMapScreenComponent from './GoogleMapScreenComponent.jsx';
+import Markdown from 'react-native-markdown-display';
 
-const PlantScreenComponent = ( ) => {
+const Plant2ScreenComponent = ( ) => {
 
   const  envValue = Environment.GOOGLE_IOS_CLIENT_ID;
   const { theme, setTheme, toggleTheme } = useContext(ThemeContext);
   const { jwtToken, refreshToken } = useContext(GoogleAuthContext);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const isIOS = ( Platform.OS === 'ios' );
   const navigation = useNavigation();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [ aiMessage, setAiMessage ] = useState("");
+  
+  
+  const isIOS = ( Platform.OS === 'ios' );
+  let serverUrl = Environment.NODE_SERVER_URL;
+  if(isIOS) {
+      serverUrl = Environment.IOS_NODE_SERVER_URL;
+  }
 
 
   useEffect(() => {
@@ -36,10 +43,48 @@ const PlantScreenComponent = ( ) => {
     });
   }
   
-  const analyzeWithGeminiAI = () => {
-    navigation.navigate('GeminiAI', {
-      image: selectedImage,
-    });
+  const analyzeWithGeminiAI = async() => {
+    setLoading(true);
+    try {
+      const fileUri = selectedImage.uri;
+      const url = new URL(fileUri);
+      let urlString = url.toString();
+      if(urlString.endsWith("/")) {
+        urlString = urlString.slice(0, -1);
+      }
+
+      let indexOfValue = urlString.lastIndexOf('/');
+      const fileName = urlString.substring(indexOfValue + 1);
+      const fileType = 'image/jpeg';
+      const formData = new FormData();
+      formData.append('myFile', {
+        uri: fileUri,
+        name: fileName,
+        type: fileType,
+        question: "1",
+      });
+      const postGeminiResponse = await fetch(serverUrl + "/rest/POST/analyzePhotoWithGemini", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken}`
+        },
+        body: formData, // Send the JSON payload
+      });
+      const result = await postGeminiResponse.json();
+      //console.log( result.message);
+      //console.log( result.response);
+      if(result.message == "success") {
+        setAiMessage(result.response);
+        setLoading(false);
+      } else {
+        setAiMessage(result.message);
+        setLoading(false);
+      }
+    } catch (error) {
+        console.log(error);
+        setLoading(false);
+    }
   }
 
   const analyzeLocation = async() => {
@@ -64,7 +109,6 @@ const PlantScreenComponent = ( ) => {
       let indexOfValue = urlString.lastIndexOf('/');
       const fileName = urlString.substring(indexOfValue + 1);
       const fileType = 'image/jpeg';
-
       const formData = new FormData();
       formData.append('myFile', {
         uri: fileUri,
@@ -124,47 +168,61 @@ const PlantScreenComponent = ( ) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.scrollContainer}>
+      <View  style={styles.container}>
       <Text style={styles.title}>Obtain Plant Image</Text>
-
-
-      <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.button} onPress={selectImage} activeOpacity={0.7}>
-          <Text style={styles.buttonText}>Select Photo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={takePicture} activeOpacity={0.7}>
-          <Text style={styles.buttonText}>Open Camera</Text>
-        </TouchableOpacity>
-      </View>
-
-      {selectedImage && (
-        <View style={styles.imageContainer}>
-          <Text style={styles.subtitle}>Selected Image:</Text>
-          <Image source={selectedImage} style={styles.image} />
-           <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.belowImageButton} onPress={analyzeWithGoogleVision} activeOpacity={0.7}>
-              <Text style={styles.buttonText}>Google Vision</Text>
+      {loading ? (
+        <View style={styles.imageContainer}></View>
+      ) : (
+        <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.button} onPress={selectImage} activeOpacity={0.7}>
+              <Text style={styles.buttonText}>Select Photo</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.belowImageButton} onPress={analyzeWithGeminiAI} activeOpacity={0.7}>
-              <Text style={styles.buttonText}>Gemini AI</Text>
+            <TouchableOpacity style={styles.button} onPress={takePicture} activeOpacity={0.7}>
+              <Text style={styles.buttonText}>Open Camera</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.belowImageButton} onPress={analyzeLocation} activeOpacity={0.7}>
-              <Text style={styles.buttonText}>Location</Text>
-            </TouchableOpacity>
-
-          </View>
         </View>
       )}
+      </View>
+    {selectedImage ? (
+      <View style={styles.imageContainer}>
+        <Text style={styles.subtitle}>Selected Image:</Text>
+        <Image source={selectedImage} style={styles.image} />
+        {loading ? (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator size="large" color="#0000ff" />
+              <Text style={styles.loadingText}>Loading data...</Text>
+            </View>
+        ) : (
+            <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.belowImageButton} onPress={analyzeWithGeminiAI} activeOpacity={0.7}>
+                  <Text style={styles.buttonText}>Analyze with Gemini AI</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.belowImageButton} onPress={analyzeLocation} activeOpacity={0.7}>
+                  <Text style={styles.buttonText}>Location</Text>
+                </TouchableOpacity>
+            </View>
+        )}
+      </View>
+    ) : null }
+    {aiMessage ? (
+      <View style={styles.aiView}>
+        <Markdown style={styles.aiText}> 
+          {aiMessage}
+        </Markdown>
+      </View>
+    ) : null}
 
-
-    </SafeAreaView>
+    </ScrollView>
   );
-    
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
     justifyContent: 'top',
     alignItems: 'center',
     backgroundColor: '#fff',
@@ -232,8 +290,29 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5, // Android shadow
   },
+  aiView: {
+    paddingTop: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingBottom: 5,
+    backgroundColor: '#fff',
+  },
+  aiText: {
+    padding: 5,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject, // Covers the entire screen
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent white background
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#333',
+  },
 
 });
 
 
-export default PlantScreenComponent;
+export default Plant2ScreenComponent;
