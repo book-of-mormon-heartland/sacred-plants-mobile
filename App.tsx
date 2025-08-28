@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { ThemeProvider } from "./context/ThemeContext";
+import { I18nProvider } from "./context/I18nContext";
 import { GoogleAuthProvider } from "./context/GoogleAuthContext";
 import TabsComponent from './component/TabsComponent';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,13 +19,15 @@ const Stack = createNativeStackNavigator();
 function App() {
 
   return (
-    <GoogleAuthProvider>
-      <ThemeProvider>
-        <NavigationContainer>
-          <TabsComponent />
-        </NavigationContainer>
-      </ThemeProvider>
-    </GoogleAuthProvider>
+    <I18nProvider>
+      <GoogleAuthProvider>
+        <ThemeProvider>
+          <NavigationContainer>
+            <TabsComponent />
+          </NavigationContainer>
+        </ThemeProvider>
+      </GoogleAuthProvider>
+    </I18nProvider>
   );
 }
 

@@ -8,6 +8,8 @@ import { useNavigation, navigate } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import CameraScreenComponent from './CameraScreenComponent.jsx';
 import Markdown from 'react-native-markdown-display';
+import { useI18n } from '.././context/I18nContext'; 
+
 
 const Plant2ScreenComponent = ( ) => {
 
@@ -20,6 +22,7 @@ const Plant2ScreenComponent = ( ) => {
   const navigation = useNavigation();
   const [selectedImage, setSelectedImage] = useState(null);
   const [ aiMessage, setAiMessage ] = useState("");
+  const { language, setLanguage, translate } = useI18n();
   
   
   const isIOS = ( Platform.OS === 'ios' );
@@ -45,6 +48,7 @@ const Plant2ScreenComponent = ( ) => {
   
   const analyzeWithGeminiAI = async() => {
     setLoading(true);
+    setAiMessage("");
     try {
       const fileUri = selectedImage.uri;
       const url = new URL(fileUri);
@@ -88,6 +92,8 @@ const Plant2ScreenComponent = ( ) => {
   }
 
   const analyzeLocation = async() => {
+    setAiMessage("");
+
     console.log("Analyze Location");
     console.log("This is the image");
     console.log(selectedImage.uri);
@@ -143,6 +149,8 @@ const Plant2ScreenComponent = ( ) => {
   }
 
   const selectImage = () => {
+    setAiMessage("");
+
     const options = {
       mediaType: 'photo',
       quality: 1,
@@ -170,36 +178,36 @@ const Plant2ScreenComponent = ( ) => {
   return (
     <ScrollView style={styles.scrollContainer}>
       <View  style={styles.container}>
-      <Text style={styles.title}>Obtain Plant Image</Text>
+      <Text style={styles.title}>{translate('obtain_plant_image')}</Text>
       {loading ? (
         <View style={styles.imageContainer}></View>
       ) : (
         <View style={styles.buttonRow}>
             <TouchableOpacity style={styles.button} onPress={selectImage} activeOpacity={0.7}>
-              <Text style={styles.buttonText}>Select Photo</Text>
+              <Text style={styles.buttonText}>{translate('select_photo')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={takePicture} activeOpacity={0.7}>
-              <Text style={styles.buttonText}>Open Camera</Text>
+              <Text style={styles.buttonText}>{translate('open_camera')}</Text>
             </TouchableOpacity>
         </View>
       )}
       </View>
     {selectedImage ? (
       <View style={styles.imageContainer}>
-        <Text style={styles.subtitle}>Selected Image:</Text>
+        <Text style={styles.subtitle}>{translate('selected_image')}</Text>
         <Image source={selectedImage} style={styles.image} />
         {loading ? (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color="#0000ff" />
-              <Text style={styles.loadingText}>Loading data...</Text>
+              <Text style={styles.loadingText}>{translate('loading_data')}...</Text>
             </View>
         ) : (
             <View style={styles.buttonRow}>
                 <TouchableOpacity style={styles.belowImageButton} onPress={analyzeWithGeminiAI} activeOpacity={0.7}>
-                  <Text style={styles.buttonText}>Analyze with Gemini AI</Text>
+                  <Text style={styles.buttonText}>{translate('analyze_with_gemini_ai')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.belowImageButton} onPress={analyzeLocation} activeOpacity={0.7}>
-                  <Text style={styles.buttonText}>Location</Text>
+                  <Text style={styles.buttonText}>{translate('location')}</Text>
                 </TouchableOpacity>
             </View>
         )}

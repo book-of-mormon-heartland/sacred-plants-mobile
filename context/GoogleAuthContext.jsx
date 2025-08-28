@@ -2,6 +2,7 @@ import { createContext, useState } from  "react";
 import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
 var Environment = require('./environment.ts');
 import { Platform } from 'react-native';
+import { useI18n } from '.././context/I18nContext'; 
 
 
 export const GoogleAuthContext = createContext("");
@@ -13,6 +14,8 @@ export const GoogleAuthProvider = ({ children }) => {
     const [userToken, setUserToken] = useState("");
     const [jwtToken, setJwtToken] = useState("");
     const [refreshToken, setRefreshToken] = useState("");
+    const { language, setLanguage, translate } = useI18n();
+    
     const isIOS = ( Platform.OS === 'ios' );
     let serverUrl = Environment.NODE_SERVER_URL;
     if(isIOS) {
@@ -44,6 +47,11 @@ export const GoogleAuthProvider = ({ children }) => {
                     }
                     const responseData = await postResponse.json();
                     const obj = JSON.parse(responseData);
+                    // set the language here if there is one.
+                    if(obj?.language && (obj.language != "")) {
+                        console.log("Language from server: " + obj.language);
+                        setLanguage(obj.language);
+                    }
 
                     if(obj?.jwtToken) {
                         setJwtToken(obj.jwtToken || "");

@@ -3,12 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ThemeContext } from ".././context/ThemeContext";
 import { GoogleAuthContext } from ".././context/GoogleAuthContext";
-import ProfileScreenComponent from './ProfileScreenComponent'; // Adjust path as needed
+import SettingsScreenComponent from './SettingsScreenComponent'; // Adjust path as needed
 import HomeScreenComponent from './HomeScreenComponent'; // Adjust path as needed
 import SearchScreenComponent from './SearchScreenComponent'; // Adjust path as needed
 import PlantStackNavigator from './PlantStackNavigator';
-
-import {  Home, User, Search, Camera } from "react-native-feather";
+import { useI18n } from '.././context/I18nContext'; 
+import {  Home, User, Search, Camera, Settings } from "react-native-feather";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +16,8 @@ const TabsComponent = ( ) => {
 
     const { theme, setTheme } = useContext(ThemeContext);
     const { userToken, userProfile  } = useContext(GoogleAuthContext);
-    
+    const { language, setLanguage, translate } = useI18n();
+
 /*
 <Tab.Screen name="Library-Main" component={BookStackNavigatorComponent} 
 */
@@ -32,6 +33,7 @@ const TabsComponent = ( ) => {
                         tabBarStyle: { backgroundColor: theme === "light" ? "#fff" : "#333" },
                         tabBarActiveTintColor: theme === "light" ? "#000" : "#fff",
                         tabBarInactiveTintColor: theme === "light" ? "#888" : "#aaa",
+                        title: translate('photograph'), // The key should correspond to your translation file
                         tabBarIcon: ({focused}) => (
                             <View>
                                 <Camera  stroke="black" fill="#fff" width={22} height={22}/>
@@ -46,6 +48,7 @@ const TabsComponent = ( ) => {
                         tabBarStyle: { backgroundColor: theme === "light" ? "#fff" : "#333" },
                         tabBarActiveTintColor: theme === "light" ? "#000" : "#fff",
                         tabBarInactiveTintColor: theme === "light" ? "#888" : "#aaa",
+                        title: translate('search'), // The key should correspond to your translation file
                         tabBarIcon: ({focused}) => (
                             <View>
                                 <Search  stroke="black" fill="#fff" width={22} height={22}/>
@@ -54,7 +57,7 @@ const TabsComponent = ( ) => {
                     }}
                 />
 
-                <Tab.Screen name="Profile" component={ProfileScreenComponent} 
+                <Tab.Screen name="Profile" component={SettingsScreenComponent} 
                     options = {{
                         disabled: userToken?.length>0 ? true : false,
                         headerTitleAlign: 'center',
@@ -62,9 +65,10 @@ const TabsComponent = ( ) => {
                         tabBarStyle: { backgroundColor: theme === "light" ? "#fff" : "#333" },
                         tabBarActiveTintColor: theme === "light" ? "#000" : "#fff",
                         tabBarInactiveTintColor: theme === "light" ? "#888" : "#aaa",
+                        title: translate('settings'), // The key should correspond to your translation file
                         tabBarIcon: ({focused}) => (
                             <View>
-                                <User stroke="black" fill="#fff" width={22} height={22}/>
+                                <Settings stroke="black" fill="#fff" width={22} height={22}/>
                             </View>
                         )
                     }}
@@ -80,6 +84,7 @@ const TabsComponent = ( ) => {
                         tabBarStyle: { backgroundColor: theme === "light" ? "#fff" : "#333" },
                         tabBarActiveTintColor: theme === "light" ? "#000" : "#fff",
                         tabBarInactiveTintColor: theme === "light" ? "#888" : "#aaa",
+                        title: translate('home'), // The key should correspond to your translation file
                         tabBarIcon: ({focused}) => (
                             <View>
                                 <Home  stroke="black" fill="#fff" width={22} height={22} />
